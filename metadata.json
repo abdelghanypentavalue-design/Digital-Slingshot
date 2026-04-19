@@ -1,0 +1,12 @@
+{
+  "name": "Shutter Studio",
+  "description": "A luxury interactive slingshot experience for events, featuring real-time drawing, text, and image sharing on a big screen.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "majorCapabilities": [
+    "real-time",
+    "canvas-interaction",
+    "slingshot-physics"
+  ]
+}

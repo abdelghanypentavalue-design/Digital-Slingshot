@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-deep: #0d0216;
+  --color-immersive-purple: #1a0b2e;
+  --color-accent-glow: #bf5af2;
+  --color-accent-secondary: #ff2d55;
+  --font-brand: 'Georgia', serif;
+  --font-sans: 'Helvetica Neue', Arial, sans-serif;
+}
+
+@layer base {
+  html, body {
+    @apply h-full w-full overflow-x-hidden;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  body {
+    @apply bg-bg-deep text-[#f5f5f7] min-h-full;
+    background: radial-gradient(circle at 50% -20%, #3a1c5e 0%, #0d0216 70%);
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    @apply border border-white/10 shadow-[0_10_30px_rgba(0,0,0,0.3)];
+  }
+  
+  .luxury-button {
+    @apply px-8 py-3 rounded-full font-medium transition-all duration-300 transform;
+    background: linear-gradient(135deg, #bf5af2, #ff2d55);
+    box-shadow: 0 0 20px rgba(191, 90, 242, 0.4);
+  }
+  
+  .luxury-button:hover {
+    @apply scale-105;
+    box-shadow: 0 0 30px rgba(191, 90, 242, 0.6);
+  }
+
+  .luxury-input {
+    @apply bg-white/5 border border-white/10 rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent-glow focus:outline-none transition-all;
+  }
+
+  .brand-text {
+    @apply font-brand italic tracking-widest;
+    background: linear-gradient(to bottom, #fff, rgba(245, 245, 247, 0.6));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .wave-line {
+    @apply w-[120px] h-[2px] mx-auto my-3;
+    background: linear-gradient(90deg, transparent, #bf5af2, transparent);
+  }
+
+  .glow-sphere {
+    @apply absolute w-[600px] h-[600px] rounded-full blur-[80px] -z-10 opacity-30;
+    background: radial-gradient(circle, rgba(191, 90, 242, 0.15) 0%, transparent 70%);
+  }
+}
+
+.wave-text span {
+  display: inline-block;
+  animation: wave 2s ease-in-out infinite;
+  animation-delay: var(--delay);
+}
+
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.slingshot-container {
+  touch-action: none;
+}

@@ -1,0 +1,40 @@
+{
+  "entities": {
+    "ProjectItem": {
+      "title": "Project Item",
+      "description": "An interactive content item (text, drawing, or image) launched via slingshot.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "enum": ["text", "drawing", "image"] },
+        "payload": { "type": "object" },
+        "velocity": { "type": "number" },
+        "direction": {
+          "type": "object",
+          "properties": {
+            "x": { "type": "number" },
+            "y": { "type": "number" }
+          }
+        },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["type", "payload", "velocity", "direction", "userId", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "enum": ["user", "admin"] }
+      },
+      "required": ["uid", "email"]
+    }
+  },
+  "firestore": {
+    "items": { "schema": "ProjectItem", "description": "Collection of launched interactive items." },
+    "users": { "schema": "User", "description": "Collection of user profiles." }
+  }
+}
