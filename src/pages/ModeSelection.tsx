@@ -1,15 +1,15 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { Type, Palette, Image as ImageIcon } from 'lucide-react';
+import { Type, Image as ImageIcon } from 'lucide-react';
 
 export default function ModeSelection() {
   const navigate = useNavigate();
 
   const modes = [
     { id: 'text', icon: Type, label: 'Write Text', color: 'from-blue-500 to-indigo-600' },
-    { id: 'draw', icon: Palette, label: 'Draw Canvas', color: 'from-purple-500 to-pink-600' },
     { id: 'image', icon: ImageIcon, label: 'Upload Image', color: 'from-orange-500 to-red-600' },
+    { id: 'photo-desc', icon: ImageIcon, label: 'Photo & Story', color: 'from-green-500 to-emerald-600' },
   ];
 
   return (

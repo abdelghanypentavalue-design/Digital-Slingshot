@@ -137,7 +137,11 @@ export default function CreatorPage() {
     setSyncStatus('syncing');
 
     const launchId = `launch-${Date.now()}-${Math.random().toString(36).substring(7)}`;
-    const rawPayload = mode === 'text' ? { text, color: textColor, fontSize } : mode === 'draw' ? { lines } : { image: content };
+    const rawPayload = 
+      mode === 'text' ? { text, color: textColor, fontSize } : 
+      mode === 'draw' ? { lines } : 
+      mode === 'image' ? { image: content } : 
+      { image: content, text };
     const enrichedPayload = { ...rawPayload, launchId };
 
     const launchData = {
@@ -186,7 +190,7 @@ export default function CreatorPage() {
       const firestorePromise = (async () => {
         try {
           let finalPayload = { ...enrichedPayload };
-          if (mode === 'image' && content && content.startsWith('data:image')) {
+          if ((mode === 'image' || mode === 'photo-desc') && content && content.startsWith('data:image')) {
             const storageRef = ref(storage, `uploads/${Date.now()}.png`);
             await uploadString(storageRef, content, 'data_url');
             finalPayload.image = await getDownloadURL(storageRef);
@@ -495,6 +499,67 @@ export default function CreatorPage() {
                 />
               </label>
             )}
+          </div>
+        )}
+
+        {mode === 'photo-desc' && (
+          <div className="flex-1 flex flex-col p-6 gap-4 overflow-y-auto">
+            <div className="flex-shrink-0 flex justify-center">
+              {content ? (
+                <div className="relative group p-2 glass rounded-[20px]">
+                  <img src={content} className="max-h-[150px] rounded-xl shadow-xl" alt="Preview" />
+                  <button 
+                    onClick={() => setContent(null)}
+                    className="absolute -top-2 -right-2 p-1.5 bg-accent-secondary rounded-full shadow-lg"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              ) : (
+                <label className="w-full max-w-[200px] aspect-square border-2 border-dashed border-white/10 rounded-[20px] flex flex-col items-center justify-center cursor-pointer hover:bg-white/5 transition-all group">
+                  <div className="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center mb-2 transition-transform group-hover:scale-110">
+                    <ImageIcon size={24} className="text-white/40" />
+                  </div>
+                  <span className="text-white/20 font-light italic uppercase tracking-[0.2em] text-[8px]">Upload Photo</span>
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (re) => {
+                          const img = new Image();
+                          img.src = re.target?.result as string;
+                          img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 800;
+                            const scale = Math.min(1, MAX_WIDTH / img.width);
+                            canvas.width = img.width * scale;
+                            canvas.height = img.height * scale;
+                            const ctx = canvas.getContext('2d');
+                            ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
+                            setContent(canvas.toDataURL('image/jpeg', 0.7));
+                          };
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                  />
+                </label>
+              )}
+            </div>
+            
+            <div className="flex-1 glass p-4 rounded-[20px]">
+              <textarea
+                className="w-full h-full bg-transparent text-center text-xl font-brand italic focus:outline-none placeholder:text-white/10 resize-none"
+                placeholder="Write a description for your photo..."
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                style={{ color: textColor }}
+              />
+            </div>
           </div>
         )}
 

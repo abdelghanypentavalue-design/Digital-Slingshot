@@ -260,7 +260,7 @@ function DisplayItem({ item, screenWidth, screenHeight }: { item: LaunchItem & {
   const [scale, setScale] = useState(item.isInitial ? 1 : 0.1);
 
   useEffect(() => {
-    if (item.type === 'image' && item.payload.image) {
+    if ((item.type === 'image' || item.type === 'photo-desc') && item.payload.image) {
       const img = new Image();
       // Only set crossOrigin if it's not a data URL
       if (!item.payload.image.startsWith('data:')) {
@@ -388,6 +388,8 @@ function DisplayItem({ item, screenWidth, screenHeight }: { item: LaunchItem & {
   }
 
   if (item.type === 'image') {
+    const imgWidth = 300;
+    const imgHeight = image ? (image.height / image.width) * imgWidth : 300;
     return (
       <Group
         x={pos.x}
@@ -400,14 +402,54 @@ function DisplayItem({ item, screenWidth, screenHeight }: { item: LaunchItem & {
         {image && (
           <KonvaImage
             image={image}
-            width={300}
-            height={300}
-            offsetX={150}
-            offsetY={150}
+            width={imgWidth}
+            height={imgHeight}
+            offsetX={imgWidth / 2}
+            offsetY={imgHeight / 2}
             shadowBlur={30}
             shadowColor="rgba(0,0,0,0.5)"
-            cornerRadius={30}
+            cornerRadius={20}
           />
+        )}
+      </Group>
+    );
+  }
+
+  if (item.type === 'photo-desc') {
+    const imgWidth = 350;
+    const imgHeight = image ? (image.height / image.width) * imgWidth : 350;
+    const textHeight = 60;
+    return (
+      <Group
+        x={pos.x}
+        y={pos.y}
+        opacity={opacity}
+        scaleX={scale}
+        scaleY={scale}
+        rotation={item.rotation}
+      >
+        {image && (
+          <Group offsetX={imgWidth / 2} offsetY={(imgHeight + textHeight) / 2}>
+            <KonvaImage
+              image={image}
+              width={imgWidth}
+              height={imgHeight}
+              shadowBlur={30}
+              shadowColor="rgba(0,0,0,0.5)"
+              cornerRadius={20}
+            />
+            <KonvaText
+              y={imgHeight + 15}
+              width={imgWidth}
+              text={item.payload.text}
+              fontSize={24}
+              fill="white"
+              fontStyle="italic"
+              align="center"
+              shadowBlur={5}
+              shadowColor="black"
+            />
+          </Group>
         )}
       </Group>
     );

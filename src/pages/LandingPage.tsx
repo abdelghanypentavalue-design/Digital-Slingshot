@@ -27,14 +27,25 @@ export default function LandingPage() {
           Luxury Interactive Slingshot Experience
         </p>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate('/modes')}
-          className="luxury-button text-xl tracking-wider"
-        >
-          START
-        </motion.button>
+        <div className="flex flex-col md:flex-row gap-6 justify-center">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/modes')}
+            className="luxury-button text-xl tracking-wider min-w-[240px]"
+          >
+            USER MOBILE
+          </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate('/display')}
+            className="luxury-button text-xl tracking-wider min-w-[240px] border-accent-secondary bg-accent-secondary/10"
+          >
+            CLIENT DISPLAY
+          </motion.button>
+        </div>
       </motion.div>
 
       <footer className="absolute bottom-10 text-[10px] uppercase tracking-[0.2em] text-white/20">
